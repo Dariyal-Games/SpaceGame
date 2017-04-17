@@ -63,7 +63,14 @@ public class player_Ctrl : MonoBehaviour
         {
             SceneManager.LoadScene("GameOver");
         }
-           
-           
+     
+    }
+
+    private void OnTriggerEnter2D(Collider2D gather)
+    {
+        if (gather.gameObject.tag == "Fuel")
+        {
+            Debug.Log("Collected");
+        }
     }
 }
