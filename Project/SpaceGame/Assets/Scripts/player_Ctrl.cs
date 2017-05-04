@@ -7,7 +7,10 @@ public class player_Ctrl : MonoBehaviour
 {
     public Transform LThruster;
     public Transform RThruster;
+    public GameObject Planet;
 
+
+    public float Speed;
     public float Force = 30;
 
     private Vector3 leftThrusterDirection;
@@ -16,7 +19,7 @@ public class player_Ctrl : MonoBehaviour
 
 
     Rigidbody2D rb;
-   
+
 
     // Use this for initialization
     void Start()
@@ -24,7 +27,7 @@ public class player_Ctrl : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
 
-        
+
 
         leftThrusterDirection = (transform.position - LThruster.position).normalized;
         rightThrusterDirection = (transform.position - RThruster.position).normalized;
@@ -36,11 +39,11 @@ public class player_Ctrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        spaceShipControl();
-
+        SpaceShipControl();
+        AroundPlanet();
     }
 
-    void spaceShipControl()
+    void SpaceShipControl()
     {
         if (Input.GetMouseButton(0))
         {
@@ -57,19 +60,25 @@ public class player_Ctrl : MonoBehaviour
         }
     }
 
+    void AroundPlanet()
+    {
+        transform.RotateAround(Planet.transform.position, -Vector3.forward, Speed * Time.deltaTime);
+    }
+
     private void OnCollisionEnter2D(Collision2D gOver)
     {
         if (gOver.gameObject.tag == "GO")
         {
             SceneManager.LoadScene("GameOver");
         }
-     
+
     }
 
     private void OnTriggerEnter2D(Collider2D gather)
     {
         if (gather.gameObject.tag == "Fuel")
         {
+            Destroy(gather.gameObject);
             Debug.Log("Collected");
         }
     }
